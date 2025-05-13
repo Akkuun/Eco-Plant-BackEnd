@@ -4,7 +4,7 @@ const axios = require('axios');
 const fs = require('fs');
 const csv = require('csv-parser');
 const path = require('path');
-
+require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 const upload = multer({ dest: 'uploads/' });
@@ -31,18 +31,21 @@ app.post('/identify', upload.single('image'), async (req, res) => {
             formData,
             { headers: formData.getHeaders() }
         );
+        //send the response to the client
+        res.json(response.data);
 
-        const results = response.data.results;
-        const bestMatch = results?.[0]?.species?.scientificNameWithoutAuthor || 'Unknown';
 
-        const match = plantData.find((row) =>
-            row.name?.toLowerCase() === bestMatch.toLowerCase()
-        );
+        // const results = response.data.results;
+        // const bestMatch = results?.[0]?.species?.scientificNameWithoutAuthor || 'Unknown';
 
-        res.json({
-            identified: bestMatch,
-            info: match || 'No additional info found in local database.',
-        });
+        // const match = plantData.find((row) =>
+        //     row.name?.toLowerCase() === bestMatch.toLowerCase()
+        // );
+
+        // res.json({
+        //     identified: bestMatch,
+        //     info: match || 'No additional info found in local database.',
+        // });
     } catch (err) {
         console.error(err);
         res.status(500).send('Erreur lors de l’identification');
