@@ -49,4 +49,9 @@ app.post('/identify', upload.single('image'), async (req, res) => {
     }
 });
 
+//GET / DEBUG PURPOSE
+app.get('/', (req, res) => {
+    res.send('Backend en ligne ✅');
+});
+
 app.listen(port, () => console.log(`Serveur en écoute sur le port ${port}`));
